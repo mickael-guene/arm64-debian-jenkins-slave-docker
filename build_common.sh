@@ -49,7 +49,7 @@ MAINTAINER Mickael Guene <mickael.guene@st.com>
 COPY build_guest.sh /build_guest.sh
 RUN /build_guest.sh && rm /build_guest.sh
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/usr/sbin/sshd"]
 EOF
 }
 
