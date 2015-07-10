@@ -25,7 +25,7 @@ export https_proxy=${https_proxy}
 ##first install needed packages
 apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
     openssh-server \
-    openjdk-7-jdk
+    openjdk-7-jdk sudo
 apt-get clean
 
 ##tweak ssh
@@ -33,9 +33,12 @@ sed -i 's|session    required     pam_loginuid.so|session    optional     pam_lo
 mkdir -p /var/run/sshd
 
 ##add jenkins user
-### /bin/true is a hack. See https://github.com/docker/docker/issues/6345
-adduser --quiet jenkins || /bin/true
+adduser --disabled-password --gecos '' jenkins
 echo "jenkins:jenkins" | chpasswd
+adduser jenkins sudo
+echo 'Defaults env_keep = "http_proxy https_proxy ftp_proxy"' >> /etc/sudoers
+echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 EOF
 chmod +x ${TMPDIR}/build_guest.sh
 }
